@@ -1,0 +1,56 @@
+mate readme.md //creates a file
+ls // shows files
+ls -al // shows all the files with rights and dates
+git add filename // adds the file to the staging area
+		//all files need to be added in staging before commit
+
+git status //shows changes to be committed 
+
+git commit -m "msg for commit" // committes the 
+
+pwd //is system level command showing where are in directry
+
+.git //directory is used by git to track the changes
+
+
+cd .. //changes the directory OS command
+
+rm -rf <directory name> //OS level command removes all the files and the directory in it
+
+init <directory>// starts a new tracking project
+
+git init . //(. dot) means current directory
+
+
+git add . //(. wildcard character) this is add all the files in the directory and files
+
+
+git log //shows all the logs
+
+git show // shows last commit and to exit press q
+
+git ls-files //shows all the files that are tracked
+
+touch.ext // creates new file OS level
+
+git commit -am "msg"// auto adds changes to stage and commits, but it only works with tracking files, they 
+have to be added using add command first
+
+to unstage the changes check git status and follow instruction there and first unstage and then restore to original
+
+git help command //shows help file for that command
+
+git log --oneline --graph --decorate --all// shows log in a one line
+
+ALIAS will help in above command, we can create our own command
+git config --global alias.hist "log --online --graph -- decorate --all"
+
+commit -m "msg" commits the changes in the staging
+
+git mv <originalname> <newname> // this file name is changed in git and the file will be automatically tracked
+if done with OS UI we have to add the changes and then commit
+
+git rm <filename> //removes the file while being tracked
+
+
+

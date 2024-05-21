@@ -1,0 +1,633 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic, algorithm}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs, makecell, tabularx, longtable}
+\newcolumntype{C}{>{\centering\arraybackslash}X} % centered version of "X" type
+\newcommand\mcx[1]{\multicolumn{1}{C}{#1}}
+\setlength{\extrarowheight}{1pt}
+\usepackage{stfloats}
+\usepackage{siunitx}
+\usepackage{caption}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{lipsum}
+\usepackage{cuted}
+\usepackage{wrapfig}
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{A Hybrid Optimization Algorithm for Capacitated Vehicle Routing Problem}
+
+
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Sannaullah}
+	\IEEEauthorblockA{\textit{Abasyn University} \\
+		%\textit{name of organization (of Aff.)}\\
+		Peshawar, Pakistan \\
+		sannaullah6464@gmail.com}
+	\and
+	\IEEEauthorblockN{2\textsuperscript{nd}Dr. Mohsin Masood}
+	\IEEEauthorblockA{\textit{Imperial College London} \\
+	%	\textit{name of organization (of Aff.)}\\
+		London, UK \\
+		m.masood@imperial.ac.uk}
+	\and
+	\IEEEauthorblockN{3\textsuperscript{rd} Sami Ullah}
+	\IEEEauthorblockA{\textit{Pakistan International Airlines} \\
+		%\textit{name of organization (of Aff.)}\\
+		Peshawar, Pakistan \\
+		samiullahpmp@gmail.com}
+		\and
+	\IEEEauthorblockN{4\textsuperscript{th} Dr. Syed Aizaz Ul Haq}
+	\IEEEauthorblockA{\textit{Abasyn University} \\
+		%\textit{name of organization (of Aff.)}\\
+		Peshawar, Pakistan \\
+		 azaz.ul.haq@abasyn.edu.pk}
+		\and
+	\IEEEauthorblockN{5\textsuperscript{th}Abdul Manan Ahmadzai}
+	\IEEEauthorblockA{\textit{Abasyn University} \\
+		%\textit{name of organization (of Aff.)}\\
+		Peshawar, Pakistan \\
+	abdulamananahmadzai10@gmail.com}
+}
+\IEEEoverridecommandlockouts
+\IEEEpubid{\makebox[\columnwidth]{978-1-6654-6472-7/23/\$31.00~\copyright2023 IEEE \hfill} \hspace{\columnsep}\makebox[\columnwidth]{ }}
+
+
+\maketitle
+
+\begin{abstract1}
+The capacitated vehicle routing problem CVRP is a combinatorial optimization with significant application in logistics, transportation, and scheduling. This problem involves balancing multiple variables for optimum utilization of resources. In CVRP the aim is to optimally utilize the fleet of vehicles to cater for the deliveries to all the client's demands from a central depot while working with constraints of capacity, range of the vehicles, and cost. Various optimization tools exist with varying efficiency due to which it is still a highly researched field. However, metaheuristic algorithms seem to offer promising results. In this paper, a hybrid solution is proposed with the combination of Particle Swarm Optimization (PSO), Grey Wolf Optimization (GWO), and Glowworm Swarm Optimization (GSO). The proposed algorithm has all the desired characteristics of the three algorithms while reducing the negative aspects of each. The proposed algorithm is tested against various heuristic algorithms and the experiments have revealed performance improvement over other metaheuristics algorithms such as PSO
+\end{abstract}
+
+\begin{IEEEkeywords}
+CVRP, CVR, Heuristic Algorithms, Vehicle Routing Problem, PSO, GWO, Evolutionary Algorithms.
+\end{IEEEkeywords}
+
+\section{Introduction}
+The capacitated vehicle routing problem (CVRP) is the same as the vehicle routing problem (VRP) with the additional constraints of limited vehicle capacity. The capacitated vehicle routing problem (CVRP) is the problem of designing optimum delivery routes for a fleet of vehicles to supply a set of customers with given demands\cite{CVRP2022}. The objective is to supply all customers minimizing the total cost of all the routes.  
+In real life, the Capacitated Vehicle Routing Problem (CVRP on multiple variables to determine the overall cost. These encompass expenses like fuel costs, tire expenses, maintenance outlays, driver wages, the cost of covering distance, and the time allocated for servicing all clients. Beyond the constraints related to vehicle capacity, real-world CVRPs also entail intricate limitations, including time windows for customer visits, incompatibilities between customers and specific vehicles, a blend of deliveries and collections within a single route, interactions between multiple depots, and so forth.
+Due to its practical application, it is a heavily researched area, and paper \cite{laporte2000classical} discusses various algorithms to solve the problem.
+The CVRP has been shown to be NP-hard \cite{ardon2022reinforcement}. The fact that the largest CVRP instances can be solved consistently by the most effective exact algorithms proposed so far containing about 50 customers reflects the difficulty of this problem. In view of the large number of practical constraints that appear in real-world CVRPs, most of the exact methods investigate a basic problem, called the basic CVRP, which is the core of all vehicle routing problems.
+Various algorithms have been developed over decades to solve VRP and CVRP. The idea of VRP was first put forward by Dantzig \& Ramser \cite{braekers2016vehicle}, who introduced the ``Truck Dispatching Problem", which attempted to solve oil distribution to meet the demand of gas stations with the use of a homogeneous fleet. Clarke \& Wright converted it into a linear optimization problem a few years later \cite{clarke1964scheduling}. Since its categorization as an optimization problem, numerous techniques and algorithms have been created to solve the problem.
+The first attempt to solve the multiple depot vehicle routing problem formulated the problem using three variable constraints as integer linear programming \cite{montoya2015literature}.  s. Dondo, Mendez, and Cerdá proposed a mixed-integer linear programming (MILP) model to minimize routing cost \cite{dondo2011multi}, in which a heterogeneous fleet of vehicles are available.They proposed mix-integer linear programming(MILP) for VRP. However, MILP has limitations as the variables or size of the data increases, adversely affecting the method's performance \cite{urbanucci2018limits}. 
+
+Over the past few decades, there has been a growing popularity in the utilization of meta-heuristic algorithms for addressing complex optimization problems across various engineering domains. These meta-heuristic algorithms draw inspiration from diverse aspects of the natural world \cite{beheshti2013review}. 
+Essentially, these are search algorithms, and the fundamental principles guiding them are exploration and exploitation \cite{Ullah2023} \cite{zhao2008genetic}. Every search algorithm must effectively manage the exploration and exploitation of a search space. Exploration involves navigating entirely new areas within the search space, while exploitation involves exploring regions near points that have been visited before. For a search algorithm to be successful, it must strike a proper balance between exploration and exploitation, establishing an effective ratio between the two \cite{Eiben1998} \cite{Crepinsek2013}.
+This surge in popularity can be attributed to their cost-effectiveness and efficiency when compared to traditional numerical approaches. The advantages of employing meta-heuristic algorithms are multifaceted. Firstly, their inherent randomness plays a crucial role in ensuring success by avoiding local extrema and effectively exploring the entire search space. Secondly, the adoption of a "black box" approach, where problem inputs and outputs are used without the necessity of gradient information, further enhances their versatility. Additionally, these algorithms are known for their ease of implementation and simplicity \cite{Abualigah2021,rajakumar2016survey }.
+
+
+With these distinctive merits, meta-heuristic algorithms prove to be particularly well-suited for addressing nonlinear, high-dimensional, and multimodal problems as found in the existing literature \cite{masdari2020discrete} \cite{barshandeh2021new} \cite{dhiman2019stoa} \cite{siarry2016metaheuristics}. There are different ways mataheuristics algorithms are classified \cite{bhattacharyya2020mayfly} and \cite{kumar2020comparative} but one of the most common classifications is shown in figure. \ref{GA}.
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.35\textheight]{images/meta}}
+	\caption{Categories of Meta heuristic Algorithms}
+	\label{GA}
+\end{figure}
+
+
+Evolution-based methods \cite{Mirjalili2016,Kar2016} draw inspiration from the principles of natural evolution. Initially, a population set is stochastically generated, commencing the search process over subsequent generations. The finest individuals are consistently gathered in each generation, and they are carried forward into the subsequent generation process. This iterative process continues until the predefined termination criteria are met or the optimal solution is achieved.
+
+Genetic Algorithm (GA) stands out as the most widely recognized evolution-inspired technique, closely mirroring Charles Darwin's Theory of "survival of the fittest" \cite{holland1992genetic}. This approach involves a fundamental sequence of selection, crossover, and mutation operations to replace the least favorable solutions within each generation. GA initiates by creating an initial population of solutions (chromosomes), and each individual's fitness is assessed using a pertinent objective function tailored to the specific problem. The most exceptional individual is then chosen to enter the mating pool, where they undergo crossover and mutation processes, yielding a fresh set of solutions (offspring).
+
+Memetic Algorithm (MA) \cite{Powell1977} is another evolution-based algorithm that emulates the GA's behavior. This algorithm enhances the least favorable solution in each generation based on its probability ratio.
+
+Swarm-based methods replicate the social behaviors observed in groups of animals \cite{Binitha2012}. Among these, one of the most renowned algorithms is Particle Swarm Optimization (PSO) \cite{Kennedy1995}, which imitates the collective behaviors of fish schooling and birds flocking. PSO, originally devised by Kennedy and Eberhart, is geared towards solving real-time problems by identifying the best solutions within a given search space. In the context of PSO, individuals are represented as particles that navigate the search space in pursuit of the optimal solution. Cognitive and social parameters are employed to facilitate both exploitation (local search) and exploration (global search) within this search space. Another widely recognized swarm-based algorithm is Ant Colony Optimization (ACO) \cite{Dorigo2006}. Swarm Intelligence has introduced a diverse array of optimization algorithms. Nevertheless, the swarm-based approach continues to captivate researchers, as it offers a platform for devising effective algorithms for a range of engineering applications.
+
+Physics-based methods emulate the fundamental physical principles governing the universe \cite{part}. Simulated Annealing (SA) \cite{kirkpatrick1983optimization}, for example, simulates the physical process of gradually heating a material and subsequently reducing its temperature to minimize defects and lower the overall system energy. In the context of simulated annealing, the introduction of just the right amount of unpredictability early in the process helps steer clear of local maxima without straying off course later in the process, particularly when a solution is in close proximity. This algorithm is particularly well-suited for identifying optimal solutions and does not require a specific starting point strategy. Additionally, there are other popular algorithms in this category, such as Big-Bang Big Crunch (BBBC), Gravitational Local Search (GLSA), Gravitational Search Algorithm (GSA), Central Force Optimization (CFO), Black Hole (BH) algorithm, Artificial Chemical Reaction Optimization Algorithm (ACROA) among many.
+
+Human-based methods are influenced by the evolution of search strategies \cite{human}.  The paper\cite{Rao2012} introduced an algorithm known as Teaching-Learning-Based Optimization (TLBO), which draws inspiration from the conventional teaching-learning dynamics of a classroom. Additionally, among the most well-known algorithms in this category is Tabu (Taboo) Search (TS).
+
+However, the above-mentioned approaches have their respective limitations, primarily stemming from the constraints associated with the objects they seek to emulate. Certain intelligent algorithms, like Genetic Algorithms (GA), lack the ability to retain a history of past search attempts. Meanwhile, other algorithms, such as Particle Swarm Optimization (PSO), frequently become trapped in local optimal solutions\cite{Zhuo2014} . Nondeterministic algorithms, such as Simulated Annealing (SA), prove inefficient and slow in scenarios where the solution space is expansive and intricate. Recent endeavors often endeavor to combine these techniques, leading to the creation of hybrid algorithms like the hybrid genetic algorithm. Nevertheless, many of these hybrid approaches still grapple with the fundamental limitations imposed by the original objects their algorithms aim to emulate.
+
+
+
+\section{Hybrid Algorithms}
+Hybrid algorithms refer to the integration of two or more algorithms working in tandem to enhance each other's capabilities, resulting in a mutually beneficial synergy \cite{Rodriguez2012}. Such combinations of algorithms are frequently termed hybrid metaheuristics (HMs) \cite{talbi2002taxonomy}.
+The fusion of Metaheuristic Algorithms is widely adopted, primarily owing to its superior performance in addressing issues related to noise, uncertainty, vagueness, and imprecision  \cite{Grosan2007,Preux1999}. In fact, there are two prominent challenges associated with Metaheuristic Algorithms when tackling global and highly nonconvex optimization problems. These challenges are as follows:
+
+\textit{Premature convergence:} The issue of premature convergence leads to a reduced level of accuracy in the final solution. The final solution typically falls within close proximity to the global optimum and is often considered satisfactory or close to optimal.
+\\\textit{Slow convergence:} Slow convergence signifies that the quality of the solution does not improve rapidly enough. This is reflected in stagnation or a nearly flat trajectory on a convergence graph, whether for a single iteration or the average of multiple iterations.
+Hybrid algorithms are developed in hopes of incorporating the benefits of each algorithm while reducing the shortcomings of each.\\
+ In this paper, a hybrid optimization algorithm is developed using PSO, GWO, and GSO. In this section, we will delve into each algorithm and review their respective advantages and disadvantages.
+
+
+
+
+
+\subsection{Grey Wolf Optimization (GWO)}\label{AA}
+Grey Wolf Optimization (GWO) is a nature-inspired optimization algorithm that is inspired by the social behavior and hunting strategies of grey wolves. It was developed by Mirjalili et al. in 2014. 
+GWO is a metaheuristic algorithm designed to solve optimization and search problems. GWO is a population-based optimization algorithm that aims to improve the solutions iteratively by mimicking the social behavior of grey wolves. The algorithm is based on the social and hunting behavior of grey wolves.
+\textit{Grey Wolf Social Structure:} A grey wolf pack typically consists of an alpha wolf, beta wolf, and omega wolf. The alpha wolf is the leader, followed by the beta wolves, and then the omega wolves.\textit{Hunting Behavior:} Wolves in hunting prey.
+They use various strategies, such as chasing and encircling, to catch their target. In the context of optimization, GWO simulates the hunting behavior of wolves to find the optimal solution to a problem. The following flowchart briefly explains GWO\cite{guha2016load}.
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.30\textheight]{GWO}}
+	\caption{Flowchart of GWO}
+	\label{FlowchartGwo}
+\end{figure}
+
+Exploration and Exploitation: GWO balances exploration and exploitation by considering the distance between wolves and adjusting step sizes during the search process.
+While GWO has been successfully applied to a variety of optimization problems, it also has its drawbacks and limitations. The following are identified in the paper \cite{hou2022improved}. GWO may not converge as quickly as some other optimization algorithms, such as genetic algorithms or particle swarm optimization. This slower convergence can be a significant drawback, especially for problems with a large search space or complex fitness landscapes.
+Moreover, GWO can sometimes get stuck in local optima, particularly in problems with multiple local optima. It may not explore the search space effectively, which can lead to suboptimal solutions.
+Like many optimization algorithms, GWO requires tuning of parameters, such as the number of wolves, the exploration and exploitation rates, and the initial positions of the wolves. Finding the right parameter settings can be challenging, and the algorithm's performance may be sensitive to these choices.
+
+
+\subsection{Particle Swarm Optimization PSO }
+PSO was developed by Kennedy and Eberhat \cite{kennedy1995particle} and is a bio-inspired swarm intelligence algorithm that draws its inspiration from the collective behavior of birds flocking and fish schooling. It is utilized to address challenging optimization problems characterized by nonlinearity, lack of convexity, or the need for combinatorial solutions, which are encountered across various domains in science and engineering.
+PSO operates as a population-based approach, employing multiple particles that together form a swarm. Each particle represents a potential solution, and these candidate solutions exist concurrently and collaborate. Within the search area, these particles traverse the landscape, seeking the most favorable landing point. This search area encompasses all potential solutions, and the group, or swarm, of these particles in motion collectively embodies the evolving set of solutions.
+
+Over successive generations or iterations, each particle maintains a record of its individual best solution, known as the personal optimum, as well as the best solution within the entire swarm, referred to as the swarm optimum. To refine their search, particles dynamically adjust two key parameters: their flying speed (velocity) and their position. This adaptation occurs in response to both their individual experiences and the experiences of their neighboring particles. They endeavor to change their positions by considering their current location, velocity, proximity to their personal optimum, and the proximity to the swarm's overall optimum \cite{wang2018particle}.
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.30\textheight]{pso}}
+	\caption{Flowchart of PSO}
+	\label{FlowchartPSO}
+\end{figure}
+
+Like previous optimization algorithms, PSO suffers from slow convergence and getting stuck in local optima \cite{nezamabadi2008binary}. Moreover, PSO can be vulnerable to stagnation, a situation in which particles may lose their ability to effectively explore the search space, especially as the optimization process progresses.
+
+\subsection{Glowworm Swarm Optimization}
+This algorithm was developed by K.N. Krishnanand and D. Ghose \cite{krishnanand2005detection}. In the Glowworm Swarm Optimization (GSO) algorithm, an initial deployment randomly scatters a group of glowworms throughout the solution space. Each glowworm represents a potential solution within the search space and carries a specific amount of luciferin, which correlates with the quality of the solution at its current position. The more intense the luciferin, the better the solution represented by that glowworm. Through a probabilistic mechanism, each glowworm can only be attracted to and move towards a neighboring glowworm if the neighbor's luciferin level surpasses its own within a local-decision domain.
+
+The density of a glowworm's neighbors influences the size of its local-decision domain, determining the radius within which it makes decisions. When neighbor density is low, the local-decision domain expands in an effort to find more neighbors. Conversely, it contracts when neighbor density is high, leading to the swarm dividing into smaller groups.
+
+This process iterates until the algorithm meets the termination condition, resulting in most glowworms clustering around the brightest individuals. The below diagram shows the flowchart of GWO\cite{javed2019comprehensive}.
+
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.30\textheight]{gso}}
+	\caption{Flowchart of GSO}
+	\label{FlowchartGSO}
+\end{figure}
+
+
+Despite being popular, GSO often has premature convergence and GSO can sometimes suffer from a lack of diversity within the population of glowworms, which can hinder its ability to escape local optima\cite{wu2012improvement}.
+
+
+
+\section{Proposed Hybrid Optimization Algorithm hoa}\label{HOA}
+Almost every known heuristic algorithm has shortcomings regarding exploration and exploitation. These two are fundamental for maintaining diversity. Diversity plays an important role in heuristic algorithms. Which makes the algorithm less likely to stagnate or provide a locally optimal solution\cite{Ullah2023}. 
+Hybrid algorithms are significant contributors to enhancing the search capabilities of algorithms. The hybridization process seeks to combine the strengths of individual algorithms, with a concurrent effort to minimize any notable shortcomings.
+While GSO stands out as a contemporary optimization algorithm, it has been observed to experience stagnation and is susceptible to false convergence [27]. In order to enhance its performance, this paper proposes a hybrid approach incorporating elements from GWO, PSO, and GSO. As discussed earlier, GSO demonstrates strong exploitation capabilities, while PSO excels in exploration. By amalgamating these three methods, the algorithm achieves a balanced diversity within the search space. This helps prevent premature convergence and enhances the likelihood of thoroughly navigating all search areas, thereby increasing the probability of attaining global optimal solutions.
+
+\subsection{Methodology}
+To assess the effectiveness of the hybrid algorithm proposed, standard mathematical functions are employed and presented in table \ref{tab:Mathbenchmark}. The algorithms are implemented using Python in the Spyder environment. The experiment is conducted on a system with an Intel i5 5th processor, 4 GB of RAM with 2000 herz. The performance of the Hybrid Optimization Algorithm (HOA) is compared against other algorithms, including PSO, GSO, Dolphine Swarm Optimization (DSO), and Honeybee Colony.
+
+\begin{center}
+	\begin{table}
+		\tabcolsep5pt 
+		\caption{Mathematical Benchmarks}
+
+	\begin{tabular}{ |c|c|c|c| } 
+		\hline
+		Sno & Function Name & Type & Formula \\ 
+		\hline
+		\rule{0pt}{15pt}
+		1 & Sphere & Unimodal & $\sum_{i}^{n} x_i^2$  \\ 
+			\rule{0pt}{15pt}
+		2 & Sum Square & Unimodal &  $\sum_{i=1}^{d} ix_i^2$   \\
+		 	\rule{0pt}{15pt}
+		3 & Step & Unimodal &  $\sum_{i=1}^{d}(\lfloor x_i +0.5 \rfloor)^2$ \\
+			\rule{0pt}{15pt}
+		4 & Schwefel & Unimodal &  $418.9829d - \sum_{i=1}^{d}x_isi(\sqrt{|x_i|})$ \\
+			\rule{0pt}{15pt} 
+		5 & Rastrigin & Multimodal &  $10d + \sum_{i=1}^{d}[x_i^2-10 cps(2\pi x_i)]$   \\
+		
+			\rule{0pt}{15pt} 
+		6 & Alpine & Multimodal &  $\sum_{i=1}^{d}|x_isin(x_i)+0.1x_i|$   \\
+			\rule{0pt}{15pt}
+		7 & Holzman & Multimodal & $\sum_{i}^{n} ix_i^4$  \\ 
+	
+		
+		\hline
+	\end{tabular}
+	\label{tab:Mathbenchmark}
+	\end{table}
+\end{center}
+
+The parameters setting of HOA for the benchmark experiments are as follows.
+
+\begin{enumerate}
+	\item $c_1,c_2$ : 2
+	\item $r_1, r_2$ : [0,1]
+	\item W : 0.7
+	\item Maximum Iteration : 100
+	\item Y : 0.6
+	\item Initial Velocity : 0
+	\item Luciferin : 0
+	\item Population Size : 0
+\end{enumerate}
+
+
+
+
+\section{Mathematical Benchmark Experiments}
+
+The experiment was conducted 100 times for each of the mathematical benchmarks. The algorithm and mathematical test function, also referred to as artificial landscapes, serve as essential components. These test functions play a crucial role in evaluating optimization algorithms, considering factors such as robustness, convergence rate, and precision. Various benchmark tests have been exists but for benchmark purposes, only functions displayed in  Table \ref{tab:Mathbenchmark} are used to evaluate various heuristic algorithms for this paper. The papers in \cite{back1996evolutionary, Haupt2004} specifically delve into single-objective optimization test functions, while \cite{Hanne2000,To1997,Binh1999 } [33-35] introduce multi-objective optimization problems within the artificial landscape. 
+
+The graphs represent the optimal performance instances for each algorithm and benchmark function, with the primary objective being the attainment of the lowest values for the mathematical function. The x-axis of the graph represents iteration, and the y-axis represents the fitness level. The global minimum for each benchmark was uniformly set at zero. The fitness level remained the same for each benchmark function experiment. As visible in fig.\ref{graphSphere} the fitness level for all the tested algorithms started at 2400. Similarly, the fitness level in the sum square fig.\ref{graphSumSquare} function started with a value of 26000. This ensured that all the meta-heuristic algorithms had the same starting line, so evaluation of each type of algorithm can be done without randomized fitness.
+
+
+Various calculations, including standard deviation, mean, and best results of fitness values, were carried out for each algorithm. Table \ref{tabMathFunction} provides a comprehensive overview of the mean and standard deviation of fitness values associated with each benchmark. Each benchmark have three rows for representing Mean $\mu$, Standard Deviation $\sigma$ and optimal result for each of the respective heuristic algorithm displaying its respective fitness values. 
+
+
+
+\begin{table}[htbp]
+	\caption{Generation to optimal solution}
+\tabcolsep5pt 
+\label{tabMathFunction}
+	\begin{center}
+	\begin{tabular}{cccccccc|}
+		\hline
+	
+		\multirow{3}{*}{Sphere} & HOA & PSO & DSO & GSO & HBC \\
+	           					& 225 & 2290 & 2076 & 894 & 676 & Mean \\
+	           					& 695 & 63 & 231 & 489 & 658 & Standard Deviation \\
+	           					& 2425 & 2425  & 2425 & 2425 & 2425 & Optimal\\
+	           					
+	           					
+	    \hline       					
+	           
+	     \multirow{3}{*}{Square} & 2560 & 17147 & 20404 & 2556 & 2556 & Mean \\
+	     								& 8083 & 4086 & 2572 & 8040 & 2572 & Standard Deviation \\
+	     								& 28122 & 28122 & 23987 & 28122 & 23987& Optimal	\\
+	     								
+	    \hline
+	     \multirow{3}{*}{Step} & 584 & 4086 & 2572 & 8084 & 2572 & Mean \\
+	     & 1829 & 439 & 0 & 1694 & 1182 & Standard Deviation \\
+	     & 6370 & 6370 & 3256 & 6370 & 6370 & Optimal	\\	
+	     
+	     
+	      \hline
+	     \multirow{3}{*}{Schwefel} & 23 & 153 & 174 & 34 & 42 & Mean \\
+	     & 57 & 31 & 7 & 53 & 51 &Standard Deviation \\
+	     & 204 & 204 & 184 & 204 & 204& Optimal	\\	
+	     
+	     
+	     \hline
+	     \multirow{3}{*}{Rastrigin} & 726 & 3529 & 4448 & 2566 & 1470 & Mean \\
+	     & 2282 & 1547 & 1100 & 1713 & 2120 & Standard Deviation \\
+	     & 7943 & 7943 & 5903 & 7943 & 7943& Optimal	\\	
+	     
+	      \hline
+	     \multirow{3}{*}{Holzman} & 5003 & 5290 & 5220 & 3276 & 2111 & Mean \\
+	     & 5158 & 6742 & 5699 & 1215 & 1185 & Standard Deviation \\
+	     & 550 & 550 & 617 & 5504 & 5163& Optimal	\\	
+	     
+	      \hline
+	     \multirow{3}{*}{Alpine} & 10 & 48 & 88 & 14 & 11 & Mean \\
+	     & 25 & 13 & 13 & 24 & 25 & Standard Deviation \\
+	     & 91 & 91 & 106 & 91 & 91 & Optimal	\\						
+	     \hline      				
+	\end{tabular}
+
+
+%\begin{tabular}{cccccccc|}
+%	\hline
+%	\multirow{3}{*}{Square} & 2560 & 17147 & 20404 & 2556 & 2556 & $\mu$ \\
+%								& 8083 & 4086 & 2572 & 8040 & 2572 & $\sigma$ \\
+%								& 28122 & 28122 & 23987 & 28122 & 23987 %&Optimal  \\
+							
+	
+	
+	
+	
+	
+%\end{tabular}
+%		\label{tab2}
+	\end{center}
+
+\end{table}
+
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/sphereFunction}}
+	\caption{Unimodal Sphere Function}
+	\label{graphSphere}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/sumSquare}}
+	\caption{Unimodal Sum Square Function}
+	\label{graphSumSquare}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/step}}
+	\caption{Unimodal Step Function}
+	\label{graphStep}
+\end{figure}
+
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/schwefel}}
+	\caption{Unimodal Schwefel Function}
+	\label{graphSchwefel}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/Rastrigin}}
+	\caption{Multimodal Rastrigin Function}
+	\label{graphRast}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/alpine}}
+	\caption{Multimodal Alpine Function}
+	\label{graphAlpine}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/Holzman}}
+	\caption{Multimodal Holzman Function}
+	\label{graphHolz}
+\end{figure}
+
+\section{Benchmark Experiment Analysis}
+
+The charts illustrate the most successful experiments across seven benchmarks for HOA, PSO, DSO, and HBC, respectively. Notably, Figure \ref{graphSphere}, which focuses on the Unimodal Sphere benchmark, reveals significant performance variations. The proposed algorithm demonstrated exceptional performance, attaining optimal fitness within a mere fifteen iterations. Following closely, HBC emerged as the second-best performer, achieving optimal fitness in fifty iterations.
+
+A standout observation was noted in the case of the Holzman function, where all algorithms exhibited commendable performance. Virtually every algorithm approached optimal fitness within fifteen iterations. However, only HOA successfully converged to optimal fitness, setting it apart from the rest.
+
+In a broader context, the proposed algorithm consistently reached the minimum optimal value within the first fifteen iterations. While HBC closely rivaled the proposed algorithm and outperformed other algorithms, it fell short of converging to optimal fitness, a distinction held by the proposed algorithm.
+
+Overall, HOA reached the predefined optimal fitness value of zero within sixteen iterations. GSO secured the second-best performance, but its efficacy was compromised in the Rastrigin and Sphere functions, as evident in Figure \ref{graphSphere} and \ref{graphRast}. Notably, PSO and DSO exhibited the poorest performance overall, except in the Holzman function, where the fitness level never approached zero.
+
+
+
+\section{Capacitated Vehicle Routing Problem(CVRP) }
+The Vehicle Routing Problem involves a set fleet of delivery vehicles with fixed capacity that is tasked with meeting specified customer demands for a single commodity from a shared depot while minimizing transit costs. This complex combinatorial problem includes both the Bin Packing Problem and the Traveling Salesman Problem (TSP) as specific instances and is conceptually situated at the confluence of these two extensively researched problems [30].
+
+The proposed algorithm was tested on CVRP where the objective is to minimize the distance traveled with maximum load while minimizing the cost and fleet utilization.
+
+In the Capacitated Vehicle Routing Problem (CVRP), all customers represent deliveries, and their demands are predetermined and cannot be split among different routes. The vehicles are identical, originating from a single depot, and only the capacity restrictions for the vehicles are imposed. The primary objective is to minimize the total cost of the routes, measured in terms of their length or travel time, required to serve all customers. Specifically, the CVRP can be described as a graph theoretic problem.
+Consider a complete and undirected graph, denoted as $G=(V,E)$, where $V=\{0,...,n\}$ is the vertex set, and E is the edge set. The vertex set $V_{c}=\{1,...,n\}$ corresponds to n customers with vertex 0 representing the depot. Each edge $\{i,j\}\in E$ is associated with a nonnegative cost $d_{ij}$, representing the travel cost from vertex $i$ to vertex $j$. In practical cases, the cost matrix $[d_{ij}]$often satisfies the triangle inequality. Each customer $i\in V_{c}$ has a known nonnegative demand $D_{i}$ to be delivered, with the depot having a fictitious demand $D_{0}=0$. A set of m identical vehicles, each with a capacity $C$, is available at the depot. Without loss of generality, it is assumed that $D_{i} \leq C$ for each $i \ln V_{c}  $. Figure \ref{CVRP} visualizes the functionality of CVRP.
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/CVRP}}
+	\caption{CVRP visualization}
+	\label{CVRP}
+\end{figure}
+
+
+
+In this CVRP variant, all available vehicles must be used, each performing exactly one route. Additionally, it is assumed that m is not smaller than $m_{min}$ , which is the minimum number of vehicles needed to serve all customers. The value of $m_{min}$ can be determined by solving the Bin Packing Problem (BPP) associated with the CVRP. The BPP involves determining the minimum number of bins (i.e., vehicles), each with capacity Q Required to load all n items (i.e., customers), each with nonnegative weight $q_{i},i \in V_{c}$
+The CVRP aims to find a collection of exactly m simple cycles or routes with the minimum cost. The cost is defined as the sum of the costs of the edges belonging to the routes, subject to the following conditions:
+
+\begin{enumerate}
+	\item Each route visits the depot vertex;
+	\item Each customer vertex is visited by exactly one route;
+	\item The sum of the demands of the vertices visited by a route does not exceed the vehicle capacity $C$;
+\end{enumerate}
+
+
+
+
+Mathematically the CVRP can be expressed using the following.
+
+
+\begin{equation}
+min\sum_{i=0}^n\sum_{j=0}^n\sum_{k=0}^nd_{ij}X_{ij}
+\end{equation}
+
+\begin{equation}
+\sum_{j=1}^nX_{ij} = 1
+\end{equation}
+
+\begin{equation}
+\sum_{j=1}^nX_{ji} = 1
+\end{equation}
+
+\begin{equation}
+\sum_{j=1}^nf_{ij} \leq di
+\end{equation}
+ 
+ \begin{equation}
+0\leq f_{ij}\leq CX_{ij}
+ \end{equation}
+ 
+  \begin{equation}
+X_{ij} \in \{0,1\}
+ \end{equation}
+ 
+
+   
+   
+   
+\begin{table}[h]
+\caption{Parameter Settings}
+\begin{center}
+	\begin{tabular}{|c|c|}
+		
+		\hline
+		Variable	 &  Explanation\\ \hline
+		$N$ &  Number of clients\\ \hline
+		 $d_{ij}$	 &  Distance from Client $i$ to $j$\\ \hline
+		$D_{i}$	 &  Demand of client $i$\\ \hline
+		 $C$	 &  Capacity of vehicle\\ \hline
+		 $X_{ij}$	 & Distance between customer $i$ to $j$\\ \hline
+		 $fij$ &  Number of vehicle traveling between $i$ to $j$\\ \hline
+		
+		
+	\end{tabular}
+	\label{tabCVRPPara}
+\end{center}
+\end{table}
+ 
+  \subsection{CRVP Methodology}
+ The Hybrid Optimization algorithm results from combining GSO, PSO, and GWO. As previously mentioned, GSO encounters issues such as a low convergence rate and susceptibility to local optima due to challenging exploration and exploitation functions. These difficulties impede the algorithm's convergence and hinder progress towards the optimal value. To address these challenges, a hybrid approach incorporating PSO, GSO and GWO is formulated.
+ 
+ By integrating PSO, which updates the velocity of search agents to identify the global best solution, and GWO, where solutions are categorized into alpha $\alpha$, beta $\beta$, and delta $\delta$ , the hybrid algorithm enhances both exploration and exploitation. These attributes contribute to an improved performance of the proposed algorithm. The subsequent flowchart in Fig \ref{fig:hoaFlow} and pseudo code in \ref{Algo:HOA} delineate the step-by-step process and parameter configurations of the hybrid algorithm.
+ 
+ 
+ \begin{strip} % <--- defined in "cuted"
+ 	\includegraphics[width=0.85\textwidth,height=0.63\textheight]{images/flowchartHOA}
+ 	\captionof{figure}{Flow Chat of HOA}
+ 	\label{fig:hoaFlow}
+ \end{strip}
+ 
+ 
+% \begin{figure}[!htb]
+ %	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/flowchartHOA}}
+ %	\caption{Flow Chat of HOA}
+ %	\label{fig:hoaFlow}
+ %\end{figure}
+ 
+ 
+ 
+ \begin{algorithm}
+	\caption{Hybrid Optimization Algorithm}
+	\label{Algo:HOA}
+	\begin{algorithmic}[1]
+		\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+		\renewcommand{\algorithmicensure}{\textbf{Output:}}
+		\REQUIRE $Inertia\; w, c1, c2, Luciferin\; Decay, r1, r2,$\\
+		$MAX Iteration, Upper Bound, Lower Bound$\\
+	
+		
+		\ENSURE  Best Solution
+		
+		\STATE $Initialize\; Population$
+		\STATE $Calculate\;fitness\;of\;Particles\; \& \;find , \alpha, \beta, \delta$
+		\STATE $Generate\; GBest\; \& \;PBest$
+		\WHILE{$t < MaxIteration$}
+		%	\STATE$ for\; each\; agent \; update\; Velocity\;\&\;Position $
+			
+			
+			\FOR{$Each\; Agent$}
+			\STATE  $ V_{ij(t+1)}=wV_{ij}+C_{1}R_{1}(P_{bij}-X_{ij})+C_{2}R_{2}(P_{bij}-\quad X_{ij})//update\; Velocity$
+			\STATE$ X_{ij(t+1)}= X_{ij} + V_{ij}//update\; Position$
+			\STATE $\alpha = Best\; agent$
+			\STATE $\beta = 2^{nd}\; Best\; agent$
+			\STATE $\delta = 3^{rd} Best\; agent$
+			\STATE $GBest = (\alpha + \beta+\delta)/3$
+			\STATE $li(t+1)= (1-p)li(t)+\gamma +(x_{i})(t+1)//update Luciferin$
+			\ENDFOR
+			
+	
+		
+		\ENDWHILE
+		
+	
+		
+	\end{algorithmic} 
+\end{algorithm}
+
+
+	Initially, each searching agent is assigned a random position, with zero velocity and luciferin. The fitness (luciferin) of each agent is calculated at their random position, and the top three agents are designated as alpha, beta, and delta, following the categorization used in the GWO algorithm. In this algorithm, alpha serves as the leader, beta collaborates with alpha and is the best candidate for alpha, and delta acts as scouts.
+
+The initial random position of the glowworm is considered as its personal best. The global best is generated by taking the mean of alpha, beta, and delta to address the exploitation issue in GSO. Within each iteration, velocity is generated using the velocity updating equation of the PSO algorithm, and the position of each searching agent is updated. This velocity equation from the PSO algorithm helps overcome the exploration problem, improving the convergence rate compared to GSO.
+
+After moving to new positions, the fitness of all searching agents is calculated, and alpha, beta, and delta solutions are selected. Personal best, global best, and luciferin are updated accordingly until the iteration count reaches the maximum specified iteration.
+
+
+
+ \subsection{HOA CVRP Experiment Setup}
+ 
+The experiment was setup using the literature standard dataset CVRP created by authors of paper \cite{letchford2019capacitated}. In this instance the file cvrp-A-G-100-4 was used. 
+ The experiment was executed in MATLAB for hundred times and graphs were created and the algorithms were executed for 120 generations. Table \ref{tabCVRPPara} shows additional settings of the experiments. The graphs are developed based on the best performance from each setting of iteration.
+ 
+ 
+ \begin{table}[h]
+ 	\caption{Parameter Settings}
+ 
+ 	\begin{center}
+ 		\begin{tabular}{|c|c|c|}
+ 			
+ 			\hline
+ 			Sno & parameters &  Values\\ \hline
+ 			1 & Numbers of Vehicles	 &  5\\ \hline
+ 			2 & Numbers of Clients	 &  16\\ \hline
+ 			3 & Capacity of Vehicles	 &  100 Units\\ \hline
+ 			4 & Area	 & 1000 x 1000 pixels\\ \hline
+ 			5 & Additional parameter &  94\\ \hline
+ 			
+ 			
+ 		\end{tabular}
+ 		\label{tabCVRPPara}
+ 	\end{center}
+ \end{table}
+ 
+
+  \subsection{Analysis of CVRP Experiment Results}
+The chart in Figure \ref{fig:HoaPerformance} and Table 5 illustrates the optimal performance achieved by each algorithm tested in the experiment. The table details fitness levels at three distinct iteration points: 15, 60, and 120 iterations.
+
+After 15 iterations, the HOA exhibited the lowest fitness score among all tested algorithms, achieving 120. In comparison, both GSO and HBC demonstrated the poorest performance, with fitness scores of 400 and 380, respectively.
+
+Upon reaching 60 iterations, the HOA further improved, reducing the fitness of the top-performing agent to 100. PSO exhibited the second-best performance at this stage, with a fitness level of 180.
+
+By the conclusion of the maximum iteration count, the HOA achieved a remarkable reduction in the lowest recorded fitness, reaching 40. PSO secured the second-best fitness, while both DSO and GSO lowered their fitness levels to 90 each. HBC exhibited the poorest performance, recording a fitness of 180.
+ 
+
+ 
+ 
+   \begin{table}[h]
+ 	\caption{Fitness value at various Iteration}
+ 	\begin{center}
+ 		\begin{tabular}{|c|c|c|c|c|c|}
+ 			\hline
+ 			& \multicolumn{5}{c|}{\textbf{Heuristic Algorithms}}\\
+ 			%\hline
+ 			\textbf{Iterations} & PSO &  DSO   & GSO & HBC & HOA \\ \hline
+ 		15 & 220 & 210  & 400 & 380 & 120\\ \hline
+ 		60 & 180 &  160  &  200 & 260 & 100\\ \hline
+ 		120 & 80 &  90 &  90 & 180 & 40\\ \hline
+ 		
+ 			
+ 			
+ 		\end{tabular}
+ 		\label{tabCVRPParad}
+ 	\end{center}
+ \end{table}
+
+
+ 
+  \begin{figure}[!htb]
+ 	\centerline{\includegraphics[width=0.45\textwidth,height=0.25\textheight]{images/hoaPerformance}}
+ 	\caption{Performance of HOA compared to other alogorithms }
+ 	\label{fig:HoaPerformance}
+ \end{figure}
+ 
+ The superior performance observed in fifty iterations highlights the randomized nature of heuristic algorithms. This variability stems from the initialization of search points, where different starting points may lead to optimal search points, ultimately resulting in improved performance.
+ 
+ The Figure \ref{fig:HoaPerformance} shows the performance of HOA compared to other heuristic algorithms. The HOA quickly improved the fitness with fifteen generations, bring the fitness down to 120 and subsequently dropped to 20 at the end of maximum iteration. Where as GSO and PSO were close contenders and at the end of the maximum iteration the fitness level reached was 150. The worst performance was exhibited by HBC, it reached the lowest fitness of 180.  
+  
+ 
+  \section{Conclusion}
+  The proposed algorithm performed well in mathematical benchmarks as compared to other heuristic algorithms and trivial CVRP. This is because the proposed hybrid algorithm optimally uses exploration and exploitation which increases the probability of convergence rate to a global optimal solution. The PSO exploration and GWO exploitation ensures the algorithm has diversity in its search.
+ 
+\bibliographystyle{IEEEtran}
+\bibliography{ref}
+
+\par.
+
+ \begin{wrapfigure}{l}{25mm} 
+	\includegraphics[width=2.5cm,height=4cm,clip,keepaspectratio]{images/sana}
+\end{wrapfigure}\par
+\textbf{Sannaullah}  received his bachelor's degree in computer science from Abasyn University Peshawar campus. Currently, pursuing a Master’s degree from Abasyn University Peshawar and working on developing an intelligent transport system using Optimization and Artificial Intelligence (A.I). His fields of Interest and research include data analysis, Machine learning, and Biomedical sciences. He is an experienced developer in Python. 
+
+
+ \begin{wrapfigure}{l}{25mm} 
+	\includegraphics[width=2.5cm,height=4cm,clip,keepaspectratio]{images/mohsin}
+\end{wrapfigure}\par
+\textbf{Dr. Mohsin Masood}   is a well skilled and accomplished data scientist with an extensive background in health data analytics. He possesses a proven track record of transforming complex, raw data from diverse sources into valuable insights and innovative solutions within the healthcare domain. His expertise lies in Health Data Science and Analytics, with a solid foundation in areas such as Machine Learning (ML), Biostatistics, AI Algorithms, Operation Research, and Optimization of ML models using Metaheuristics Algorithms (Nature Inspired Algorithms). In addition, he has a comprehensive understanding of Health Data Analytics, and my research focus centers around the intersection of Multimorbidity with population and omics data, including genomics, etc. Notably, he has utilized the databanks of SAIL, HES, UK Biobank, and TRIPHIC to conduct groundbreaking research on the prognosis and longitudinal analysis of pulmonary hypertension (PH) and Myocardial Infarction (MI) Cohorts.
+\par.
+
+ \begin{wrapfigure}{l}{25mm} 
+	\includegraphics[width=2.5cm,height=4cm,clip,keepaspectratio]{images/sami}
+\end{wrapfigure}\par
+\textbf{Sami Ullah}  holds both master’s and bachelor’s degrees in computer science from the Institute of Management Sciences, Peshawar, and is a certified Project Management Professional (PMP). Beginning his career as a freelance developer in 2005, he undertook projects encompassing warehouse and library management systems, as well as web development.Since 2007, Samiullah has been an integral part of Pakistan International Airlines. In his current role, he oversees Passenger Service Systems projects in SABRE and HITIT. His professional focus involves leveraging modern tools to enhance business processes, with a particular interest in the application of Genetic algorithms. This interest extends to optimizing crew and aircraft scheduling to minimize operational costs in route management for airlines.For inquiries, Samiullah can be reached via email at samiullahpmp@gmail.com.
+
+\par.
+ \begin{wrapfigure}{l}{25mm} 
+	\includegraphics[width=2.5cm,height=4cm,clip,keepaspectratio]{images/aizaz}
+\end{wrapfigure}\par
+\textbf{Syed Aizaz Ul Haq}   received a master’s in network systems from Sunderland Institute of Science and Technology SIST, Sunderland, UK. He is currently pursuing a Ph.D. degree at Comsats University Islamabad CUI Wah Campus, working on the development of Intelligent Transport Systems and frameworks using software-defined networks, AI and Big Data Analytics. He is currently working as a lecturer in the Department of Computing at the Abasyn University Peshawar and is currently exploring areas of SDN, Networks, and Cloud Computing. He also has experience as a Java Programmer.
+
+
+\par.
+\begin{wrapfigure}{l}{25mm} 
+	\includegraphics[width=2.5cm,height=4cm,clip,keepaspectratio]{images/manan}
+\end{wrapfigure}\par
+\textbf{Abdul Manan Ahmadzai}    Received a bachelor’s degree from Khurasan University in Nangarhar, Afghanistan, and M. S Degree in computer science (MSCS) From Abasyn University Peshawar Pakistan. He is currently working as an IT Officer in AABARAR Organization. He worked as a lecturer and Head of the Research Department for the last 5 years at Khurasan University Nangarhar Afghanistan. He also has 7 years of experience in Software Development in different Languages.
+
+\end{document}
+
+
+
+
+
+
+
+\end{document}
+
+
